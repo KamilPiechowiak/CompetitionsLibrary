@@ -33,7 +33,7 @@ int dfs(int a, int t, int val)
 {
 	if(a==t)
 		return val;
-	for(; st[a] < v[a].size(); st[a]++)
+	for(; st[a] < int(v[a].size()); st[a]++)
 	{
 		Edge &e = v[a][st[a]];
 		if(d[a] < d[e.b] && e.c-e.f > 0)
