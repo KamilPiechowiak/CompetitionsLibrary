@@ -11,24 +11,32 @@ typedef long long ll;
 #define INF 1e9
 int n;
 const int maxn = 5010;
+
 struct Edge {
-	int b, c, f, r;
-	Edge(int x1, int x2, int x3, int x4) : b(x1), c(x2), f(x3), r(x4) {}
+    int b, c, f, r;
+    Edge(int bb, int cc, int rr) : b(bb), c(cc), f(0), r(rr) {}
 };
 
 vector<Edge> v[maxn];
 int d[maxn], st[maxn];
+int dinicn;
+
+void addEdge(int a, int b, int c)
+{
+    int s1 = SIZE(v[a]);
+    int s2 = SIZE(v[b]);
+    v[a].PB(Edge(b, c, s2));
+    v[b].PB(Edge(a, 0, s1));
+}
 
 int dfs(int a, int t, int val)
 {
 	if(a==t)
-	{
 		return val;
-	}
 	for(; st[a] < v[a].size(); st[a]++)
 	{
 		Edge &e = v[a][st[a]];
-		if(d[a]+1==d[e.b] && e.c-e.f > 0)
+		if(d[a] < d[e.b] && e.c-e.f > 0)
 		{
 			int res = dfs(e.b, t, min(e.c-e.f, val));
 			if(res > 0)
@@ -48,7 +56,7 @@ ll maxFlow(int s, int t)
 	ll res=0;
 	while(true)
 	{
-		for(int i=1; i<= n+1; i++)
+		for(int i=1; i<= dinicn; i++)
 		{
 			st[i] = 0;
 			d[i] = INF;
@@ -56,7 +64,7 @@ ll maxFlow(int s, int t)
 		d[s] = 0;
 		queue<int> kolejka;
 		kolejka.push(s);
-		while(kolejka.empty() == false)
+		while(!kolejka.empty())
 		{
 			int a = kolejka.front();
 			kolejka.pop();
@@ -76,7 +84,7 @@ ll maxFlow(int s, int t)
 		{
 			df = dfs(s, t, INF);
 			res= res + (ll)df; 
-		}while(df);
+		}while(df > 0);
 		
 	}
 	return res;
@@ -87,6 +95,7 @@ int main()
 	ios_base::sync_with_stdio(0);
 	int m;
 	cin >> n >> m;
+    dinicn = n;
 	for(int i=0; i < m; i++)
 	{
 		int a, b, c, s1, s2;
