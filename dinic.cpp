@@ -23,8 +23,8 @@ int dinicn;
 
 void addEdge(int a, int b, int c)
 {
-    int s1 = SIZE(v[a]);
-    int s2 = SIZE(v[b]);
+    int s1 = v[a].size();
+    int s2 = v[b].size();
     v[a].PB(Edge(b, c, s2));
     v[b].PB(Edge(a, 0, s1));
 }
@@ -100,20 +100,9 @@ int main()
 	{
 		int a, b, c, s1, s2;
 		cin >> a >> b >> c;
-		s1 = v[a].size();
-		s2 = v[b].size();
-		v[a].PB(Edge(b, c, 0, s2));
-		v[b].PB(Edge(a, c, 0, s1));
+		addEdge(a, b, c);
 	}
 	cout << maxFlow(1, n) << "\n";
-	
-	/*for(int i=1; i <= n; i++)
-	{
-		for(Edge e : v[i])
-		{
-			cout << i << " " << e.b << " " << e.f << "\n";
-		}
-	}*/
 	
 	return 0;
 }
